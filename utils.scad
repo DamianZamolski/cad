@@ -1,3 +1,5 @@
+wall = 1.5;
+
 function Sum(elements = [ [ 1, 2, 3 ], 5 ]) =
     let(sum = function(numbers, i = 0, result = 0) i == len(numbers)
                   ? result
@@ -15,7 +17,7 @@ function Minus(list_or_number = [ 1, 2, 3 ]) =
         ? [for (list_element = list_or_number) Minus(list_element)]
         : -list_or_number;
 
-module Open_Box(size = [ 1, 1, 1 ], x = 1, y = 1, t = 1.5) {
+module Open_Box(size = [ 1, 1, 1 ], x = 1, y = 1, t = wall) {
   cube([ size.x, size.y, t ]);
   dx = (size.x - t) / x;
   dy = (size.y - t) / y;
@@ -27,75 +29,69 @@ module Open_Box(size = [ 1, 1, 1 ], x = 1, y = 1, t = 1.5) {
   }
 }
 
-module Corner_Part(size) {
-  cube_height = size.z - size.x;
+module Corner_Part(size = [ 1, 1, 1 ]) {
+  size_diff = size.z - size.x;
+  cube_height = size_diff > 0 ? size_diff : 0;
 
   cube([ size.x, size.y, cube_height ]);
 
   translate([ 0, 0, cube_height ]) {
     intersection() {
-      rotate([ 90, 0, 0 ]) cylinder(100, size.x, size.x, center = true);
-      cube([ 50, size.y, 50 ]);
+      rotate([ 90, 0, 0 ])
+          cylinder(h = size.x, r1 = size.x, r2 = size.x, center = true);
+      cube([ size.x, size.y, size.z ]);
     }
   }
 }
 
-module Corner(size) {
-  Corner_Part(size);
-  translate([ size.y, 0, 0 ]) rotate([ 0, 0, 90 ]) Corner_Part(size);
+module Corner(size = [ 1, 1, 1 ], wall = wall) {
+  Corner_Part([ size.x, wall, size.z ]);
+  translate([ wall, 0, 0 ]) rotate([ 0, 0, 90 ])
+      Corner_Part([ size.y, wall, size.z ]);
 }
 
-module Holder(
-    size,
-    corner_width,
-    thickness,
-    x_finger_hole_radius,
-    y_finger_hole_radius) {
-  base = [ size.x, size.y, thickness ];
+module Card_Box(size = [ 1, 1, 1 ], wall = wall, hole_radius = 10) {
+  base = [ size.x, size.y, wall ];
 
   difference() {
     cube(base);
-    translate([ size.x / 2, 0, 0 ]) { sphere(x_finger_hole_radius); }
-    translate([ size.x / 2, size.y, 0 ]) { sphere(x_finger_hole_radius); }
-    translate([ 0, size.y / 2, 0 ]) { sphere(y_finger_hole_radius); }
-    translate([ size.x, size.y / 2, 0 ]) { sphere(y_finger_hole_radius); }
+    translate([ size.x / 2, 0, 0 ]) { sphere(hole_radius); }
+    translate([ size.x / 2, size.y, 0 ]) { sphere(hole_radius); }
+    translate([ 0, size.y / 2, 0 ]) { sphere(hole_radius); }
+    translate([ size.x, size.y / 2, 0 ]) { sphere(hole_radius); }
   }
 
-  module _Corner() { Corner([ corner_width, thickness, size.z ]); }
+  corner = [
+    (size.x - 2 * hole_radius) / 2,
+    (size.y - 2 * hole_radius) / 2,
+    size.z
+  ];
+  module _Corner() { Corner(size = corner, wall = wall); }
 
-  _Corner();
+  module _Corners_Pair() {
+    _Corner();
 
-  translate([ size.x, 0, 0 ]) {
-    rotate([ 0, 0, 90 ]) { _Corner(); }
+    translate([ size.x, 0, 0 ]) mirror([ -1, 0, 0 ]) _Corner();
   }
 
-  translate([ 0, size.y, 0 ]) {
-    rotate([ 0, 0, -90 ]) { _Corner(); }
-  }
+  _Corners_Pair();
 
-  translate([ size.x, size.y, 0 ]) {
-    rotate([ 0, 0, 180 ]) { _Corner(); }
-  }
+  translate([ 0, size.y, 0 ]) mirror([ 0, 1, 0 ]) _Corners_Pair();
 }
 
-module Multi_Holder(
-    size,
-    corner_width,
-    thickness,
-    x_finger_hole_radius,
-    y_finger_hole_radius,
-    x,
-    y) {
+module Multi_Card_Box(
+    size = [ 1, 1, 1 ],
+    wall = wall,
+    hole_radius = 10,
+    x = 2,
+    y = 2) {
   for (i = [0:x - 1]) {
     for (j = [0:y - 1]) {
-      translate([ i * (size.x - thickness), j * (size.y - thickness), 0 ]) {
-        Holder(
-            size = size,
-            corner_width = corner_width,
-            thickness = thickness,
-            x_finger_hole_radius = x_finger_hole_radius,
-            y_finger_hole_radius = y_finger_hole_radius);
+      translate([ i * (size.x - wall), j * (size.y - wall), 0 ]) {
+        Card_Box(size = size, wall = wall, hole_radius = hole_radius);
       }
     }
   }
 }
+
+Multi_Card_Box(size = [ 70, 90, 120 ], hole_radius = 15);
