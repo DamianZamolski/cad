@@ -30,9 +30,7 @@ module Open_Box(size = [ 1, 1, 1 ], x = 1, y = 1, t = wall) {
 }
 
 module Corner_Part(size = [ 1, 1, 1 ]) {
-  size_diff = size.z - size.x;
-  cube_height = size_diff > 0 ? size_diff : 0;
-
+  cube_height = max([ size.z - size.x, 0 ]);
   cube([ size.x, size.y, cube_height ]);
 
   translate([ 0, 0, cube_height ]) {
