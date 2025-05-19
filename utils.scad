@@ -93,5 +93,3 @@ module Multi_Card_Box(
     }
   }
 }
-
-Multi_Card_Box(size = [ 70, 90, 120 ], hole_radius = 15);
