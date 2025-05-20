@@ -29,26 +29,31 @@ module Open_Box(size = [ 1, 1, 1 ], x = 1, y = 1, t = wall) {
   }
 }
 
-module Corner_Part(size = [ 1, 1, 1 ]) {
-  cube_height = max([ size.z - size.x, 0 ]);
-  cube([ size.x, size.y, cube_height ]);
+module Corner_Part(size = [ 1, 1, 1 ], rounded = false) {
+  if (rounded) {
+    cube_height = max([ size.z - size.x, 0 ]);
+    cube([ size.x, size.y, cube_height ]);
 
-  translate([ 0, 0, cube_height ]) {
-    intersection() {
-      rotate([ 90, 0, 0 ])
-          cylinder(h = size.x, r1 = size.x, r2 = size.x, center = true);
-      cube([ size.x, size.y, size.z ]);
+    translate([ 0, 0, cube_height ]) {
+      intersection() {
+        rotate([ 90, 0, 0 ])
+            cylinder(h = size.x, r1 = size.x, r2 = size.x, center = true);
+        cube([ size.x, size.y, size.z ]);
+      }
     }
+  } else {
+    cube(size);
   }
 }
 
-module Corner(size = [ 1, 1, 1 ], wall = wall) {
-  Corner_Part([ size.x, wall, size.z ]);
+module Corner(size = [ 1, 1, 1 ], wall = wall, rounded = false) {
+  Corner_Part(size = [ size.x, wall, size.z ], rounded = rounded);
   translate([ wall, 0, 0 ]) rotate([ 0, 0, 90 ])
-      Corner_Part([ size.y, wall, size.z ]);
+      Corner_Part(size = [ size.y, wall, size.z ], rounded = rounded);
 }
 
-module Card_Box(size = [ 1, 1, 1 ], wall = wall, hole_radius = 10) {
+module
+Card_Box(size = [ 1, 1, 1 ], wall = wall, hole_radius = 10, rounded = false) {
   base = [ size.x, size.y, wall ];
 
   difference() {
@@ -64,7 +69,7 @@ module Card_Box(size = [ 1, 1, 1 ], wall = wall, hole_radius = 10) {
     (size.y - 2 * hole_radius) / 2,
     size.z
   ];
-  module _Corner() { Corner(size = corner, wall = wall); }
+  module _Corner() { Corner(size = corner, wall = wall, rounded = rounded); }
 
   module _Corners_Pair() {
     _Corner();
@@ -81,12 +86,17 @@ module Multi_Card_Box(
     size = [ 1, 1, 1 ],
     wall = wall,
     hole_radius = 10,
+    rounded = false,
     x = 2,
     y = 2) {
   for (i = [0:x - 1]) {
     for (j = [0:y - 1]) {
       translate([ i * (size.x - wall), j * (size.y - wall), 0 ]) {
-        Card_Box(size = size, wall = wall, hole_radius = hole_radius);
+        Card_Box(
+            size = size,
+            wall = wall,
+            hole_radius = hole_radius,
+            rounded = rounded);
       }
     }
   }
