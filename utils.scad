@@ -29,7 +29,7 @@ module Open_Box(size = [ 1, 1, 1 ], x = 1, y = 1, t = wall) {
   }
 }
 
-module Corner_Part(size = [ 1, 1, 1 ], rounded = false) {
+module Wall_Part(size = [ 1, 1, 1 ], rounded = false) {
   if (rounded) {
     cube_height = max([ size.z - size.x, 0 ]);
     cube([ size.x, size.y, cube_height ]);
@@ -46,46 +46,76 @@ module Corner_Part(size = [ 1, 1, 1 ], rounded = false) {
   }
 }
 
-module Corner(size = [ 1, 1, 1 ], wall = wall, rounded = false) {
-  Corner_Part(size = [ size.x, wall, size.z ], rounded = rounded);
-  translate([ wall, 0, 0 ]) rotate([ 0, 0, 90 ])
-      Corner_Part(size = [ size.y, wall, size.z ], rounded = rounded);
+module Card_Box_Wall(size = [ 1, 1, 1 ], hole_diameter = 0, rounded = 0) {
+  module _Wall_Part() {
+    Wall_Part(
+        size = [ (size.x - hole_diameter) / 2, size.y, size.z ],
+        rounded = rounded);
+  }
+  if (hole_diameter > 0) {
+    _Wall_Part();
+    translate([ size.x, 0, 0 ]) mirror([ 1, 0, 0 ]) _Wall_Part();
+  } else {
+    cube(size);
+  }
 }
 
-module
-Card_Box(size = [ 1, 1, 1 ], wall = wall, hole_radius = 10, rounded = false) {
+module Card_Box(
+    size = [ 1, 1, 1 ],
+    wall = wall,
+    bottom_hole_diameter = 0,
+    top_hole_diameter = 0,
+    left_hole_diameter = 0,
+    right_hole_diameter = 0,
+    rounded = false) {
   base = [ size.x, size.y, wall ];
 
   difference() {
     cube(base);
-    translate([ size.x / 2, 0, 0 ]) { sphere(hole_radius); }
-    translate([ size.x / 2, size.y, 0 ]) { sphere(hole_radius); }
-    translate([ 0, size.y / 2, 0 ]) { sphere(hole_radius); }
-    translate([ size.x, size.y / 2, 0 ]) { sphere(hole_radius); }
+    translate([ size.x / 2, 0, 0 ]) { sphere(d = bottom_hole_diameter); }
+    translate([ size.x / 2, size.y, 0 ]) { sphere(d = top_hole_diameter); }
+    translate([ 0, size.y / 2, 0 ]) { sphere(d = left_hole_diameter); }
+    translate([ size.x, size.y / 2, 0 ]) { sphere(d = right_hole_diameter); }
   }
 
-  corner = [
-    (size.x - 2 * hole_radius) / 2,
-    (size.y - 2 * hole_radius) / 2,
-    size.z
-  ];
-  module _Corner() { Corner(size = corner, wall = wall, rounded = rounded); }
+  Card_Box_Wall(
+      size = [ size.x, wall, size.z ],
+      hole_diameter = bottom_hole_diameter,
+      rounded = rounded);
 
-  module _Corners_Pair() {
-    _Corner();
-
-    translate([ size.x, 0, 0 ]) mirror([ -1, 0, 0 ]) _Corner();
+  translate([ 0, size.y, 0 ]) {
+    Card_Box_Wall(
+        size = [ size.x, wall, size.z ],
+        hole_diameter = top_hole_diameter,
+        rounded = rounded);
   }
 
-  _Corners_Pair();
+  translate([ wall, 0, 0 ]) {
+    rotate(a = 90) {
+      Card_Box_Wall(
+          size = [ size.y, wall, size.z ],
+          hole_diameter = left_hole_diameter,
+          rounded = rounded);
+    }
+  }
 
-  translate([ 0, size.y, 0 ]) mirror([ 0, 1, 0 ]) _Corners_Pair();
+  translate([ size.x, 0, 0 ]) {
+    rotate(a = 90) {
+      Card_Box_Wall(
+          size = [ size.y, wall, size.z ],
+          hole_diameter = right_hole_diameter,
+          rounded = rounded);
+    }
+  }
 }
 
 module Multi_Card_Box(
     size = [ 1, 1, 1 ],
     wall = wall,
-    hole_radius = 10,
+    bottom_hole_diameter = 0,
+    top_hole_diameter = 0,
+    left_hole_diameter = 0,
+    right_hole_diameter = 0,
     rounded = false,
     x = 2,
     y = 2) {
@@ -95,7 +125,10 @@ module Multi_Card_Box(
         Card_Box(
             size = size,
             wall = wall,
-            hole_radius = hole_radius,
+            bottom_hole_diameter = bottom_hole_diameter,
+            top_hole_diameter = top_hole_diameter,
+            left_hole_diameter = left_hole_diameter,
+            right_hole_diameter = right_hole_diameter,
             rounded = rounded);
       }
     }

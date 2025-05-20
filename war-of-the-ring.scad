@@ -19,7 +19,6 @@ cards_holder = [
   insert.z
 ];
 corner_width = cards_holder.x * 0.25;
-finger_hole_radius = 15;
 tokens = [ cards.x, insert.y - 2 * cards_holder.x + t, insert.z ];
 
 for (i = [0:1]) {
@@ -36,7 +35,8 @@ translate([ 2 * (double_nation.x + gap), 0, 0 ]) {
       Multi_Card_Box(
           size = cards_holder,
           wall = t,
-          hole_radius = finger_hole_radius,
           x = 2,
-          y = 1);
+          y = 1,
+          bottom_hole_diameter = 30,
+          rounded = false);
 }
