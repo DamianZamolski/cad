@@ -19,17 +19,23 @@ token_types = 25;
 rooms_box = Sum([ room_tiles, box_padding, box_walls ]);
 cards_box = Sum([ cards, cards_padding, box_walls ]);
 big_cards_box = Sum([ big_cards, cards_padding, box_walls ]);
-characters_box =
-    [ padded_box.x - (rooms_box.x + cards_box.x) + wall, cards_box.y, padded_box.z ];
+characters_box = [
+  padded_box.x - (rooms_box.x + cards_box.x) + wall,
+  cards_box.y,
+  padded_box.z
+];
 tokens_space = [ padded_box.x, padded_box.y - cards_box.y, padded_box.z ];
 left_tokens_box = [ tokens_space.x * 3 / 5, tokens_space.y, tokens_space.z ];
 right_tokens_box = [ tokens_space.x * 2 / 5, tokens_space.y, tokens_space.z ];
 
-expanded_rooms_box = [ rooms_box.x, cards_box.y, padded_box.z / 2 ];
+expanded_rooms_box =
+    [ rooms_box.x, cards_box.y, padded_box.z - big_cards_box.z ];
 expanded_cards_box = [ cards_box.x, cards_box.y, padded_box.z ];
-expanded_big_cards_box = [ rooms_box.x, cards_box.y, padded_box.z / 2 ];
+expanded_big_cards_box = [ rooms_box.x, cards_box.y, big_cards_box.z ];
 
-Box(size = expanded_rooms_box);
+Box(size = expanded_rooms_box,
+    bottom_hole_diameter = finger_hole_diameter,
+    rounded = true);
 
 translate([ expanded_rooms_box.x + gap, 0, 0 ]) {
   Box(size = expanded_cards_box,
