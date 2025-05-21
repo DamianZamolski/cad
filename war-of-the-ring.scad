@@ -32,7 +32,7 @@ translate([ 2 * (double_nation.x + gap), 0, 0 ]) {
   Open_Box(tokens);
 
   translate([ cards_holder.y, tokens.y + gap, 0 ]) rotate([ 0, 0, 90 ])
-      Multi_Card_Box(
+      Multi_Box(
           size = cards_holder,
           wall = t,
           x = 2,

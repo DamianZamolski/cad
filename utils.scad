@@ -122,3 +122,28 @@ Box(size = [ 1, 1, 1 ],
     }
   }
 }
+
+module Multi_Box(
+    size = [ 1, 1, 1 ],
+    wall = wall,
+    bottom_hole_diameter = 0,
+    top_hole_diameter = 0,
+    left_hole_diameter = 0,
+    right_hole_diameter = 0,
+    rounded = false,
+    x = 2,
+    y = 1) {
+  for (i = [0:x - 1]) {
+    for (j = [0:y - 1]) {
+      translate([ i * (size.x - wall), j * (size.y - wall), 0 ]) {
+        Box(size = size,
+            wall = wall,
+            bottom_hole_diameter = bottom_hole_diameter,
+            top_hole_diameter = top_hole_diameter,
+            left_hole_diameter = left_hole_diameter,
+            right_hole_diameter = right_hole_diameter,
+            rounded = rounded);
+      }
+    }
+  }
+}
