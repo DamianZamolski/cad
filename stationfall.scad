@@ -60,9 +60,3 @@ translate([ 0, 0, expanded_rooms_box.z + gap ]) {
 }
 
 % cube(padded_box);
-
-echo([
-  (tokens_space.x - 6 * wall) / 5,
-  (tokens_space.y - 6 * wall) / 5,
-  tokens_space.z
-]);

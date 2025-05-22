@@ -1,17 +1,17 @@
 wall = 1.5;
 
+function Sum_Numbers(numbers = [ 1, 2, 3 ], i = 0) =
+    i == len(numbers) ? 0 : numbers[i] + Sum_Numbers(numbers, i + 1);
+
 function Sum(elements = [ [ 1, 2, 3 ], 5 ]) =
-    let(sum = function(numbers, i = 0, result = 0) i == len(numbers)
-                  ? result
-                  : sum(numbers, i + 1, result + numbers[i]),
-        max_element_length = max(
+    let(max_element_length = max(
             [for (element = elements) is_list(element) ? len(element)
                                                        : 0])) max_element_length
-        ? [for (i = [0:max_element_length - 1]) sum(
+        ? [for (i = [0:max_element_length - 1]) Sum_Numbers(
               [for (element = elements) is_list(element)
                       ? (element[i] ? element[i] : 0)
                       : element])]
-        : sum(elements);
+        : Sum_Numbers(elements);
 
 function Minus(list_or_number = [ 1, 2, 3 ]) =
     is_list(list_or_number)
