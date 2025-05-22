@@ -4283,20 +4283,6 @@ solid OpenSCAD_Model
       vertex 404.4 118.8 86
     endloop
   endfacet
-  facet normal 0 -1 0
-    outer loop
-      vertex 404.4 170.8 1.6
-      vertex 406 170.8 86
-      vertex 404.4 170.8 86
-    endloop
-  endfacet
-  facet normal 0 -1 -0
-    outer loop
-      vertex 406 170.8 86
-      vertex 404.4 170.8 1.6
-      vertex 406 170.8 1.6
-    endloop
-  endfacet
   facet normal -1 0 0
     outer loop
       vertex 404.4 170.8 1.6
@@ -4309,6 +4295,20 @@ solid OpenSCAD_Model
       vertex 404.4 192.8 86
       vertex 404.4 170.8 1.6
       vertex 404.4 170.8 86
+    endloop
+  endfacet
+  facet normal 0 -1 0
+    outer loop
+      vertex 404.4 170.8 1.6
+      vertex 406 170.8 86
+      vertex 404.4 170.8 86
+    endloop
+  endfacet
+  facet normal 0 -1 -0
+    outer loop
+      vertex 406 170.8 86
+      vertex 404.4 170.8 1.6
+      vertex 406 170.8 1.6
     endloop
   endfacet
   facet normal -1 0 0
@@ -4997,20 +4997,6 @@ solid OpenSCAD_Model
       vertex 404.4 194.4 86
     endloop
   endfacet
-  facet normal 0 -1 0
-    outer loop
-      vertex 404.4 246.4 1.6
-      vertex 406 246.4 86
-      vertex 404.4 246.4 86
-    endloop
-  endfacet
-  facet normal 0 -1 -0
-    outer loop
-      vertex 406 246.4 86
-      vertex 404.4 246.4 1.6
-      vertex 406 246.4 1.6
-    endloop
-  endfacet
   facet normal -1 0 0
     outer loop
       vertex 404.4 246.4 1.6
@@ -5023,6 +5009,20 @@ solid OpenSCAD_Model
       vertex 404.4 268.4 86
       vertex 404.4 246.4 1.6
       vertex 404.4 246.4 86
+    endloop
+  endfacet
+  facet normal 0 -1 0
+    outer loop
+      vertex 404.4 246.4 1.6
+      vertex 406 246.4 86
+      vertex 404.4 246.4 86
+    endloop
+  endfacet
+  facet normal 0 -1 -0
+    outer loop
+      vertex 406 246.4 86
+      vertex 404.4 246.4 1.6
+      vertex 406 246.4 1.6
     endloop
   endfacet
   facet normal 0 -1 0

@@ -18,7 +18,13 @@ function Big_Cards(z = 10) =
     Sum([ [ big_card.x, big_card.y, z ], cards_box_padding, cards_box_walls ]);
 
 module Cards_Box(size) {
-  Box(size = size, wall = wall, bottom_hole_diameter = 20, rounded = true);
+  Box(size = size,
+      wall = wall,
+      bottom_hole_diameter = 20,
+      top_hole_diameter = 20,
+      left_hole_diameter = 20,
+      right_hole_diameter = 20,
+      rounded = true);
 }
 
 empire_base_mission_cards = Big_Cards(10);
