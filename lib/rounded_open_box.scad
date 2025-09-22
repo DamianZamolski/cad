@@ -1,10 +1,10 @@
 include <rounded_cube.scad>
 include <semi_rounded_cube.scad>
 
-// rounded_open_box();
+*rounded_open_box();
 
 module rounded_open_box(
-    size = [ 50, 30, 20 ],
+    size = [ 50, 50, 20 ],
     wall = 1.5,
     outside_radius = 1e10,
     inside_radius = 1e10) {

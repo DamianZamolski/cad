@@ -7,7 +7,6 @@ module hex_grid(size = [ 50, 30 ], wall = 1.5, hole_radius = 1.5) {
   hex_inner_radius = hole_inner_radius + wall / 2;
   hex_outer_radius = 2 * hex_inner_radius / sqrt(3);
 
-
   distance_between_hexes_centers = 2 * hex_inner_radius;
   x_distance = distance_between_hexes_centers * cos(30);
   y_distance = distance_between_hexes_centers * sin(30);
@@ -44,8 +43,12 @@ module hex_grid(size = [ 50, 30 ], wall = 1.5, hole_radius = 1.5) {
     }
   }
 
-  intersection() {
-    grid();
+  if (hole_radius > 0) {
+    intersection() {
+      grid();
+      square(size, center = true);
+    }
+  } else {
     square(size, center = true);
   }
 }

@@ -1,6 +1,6 @@
 include <hex_grid_base.scad>
 
-*open_box();
+* open_box();
 
 module open_box(
     size = [ 50, 30, 20 ],
@@ -14,7 +14,8 @@ module open_box(
   hex_grid_base(
       size = [ size.x, size.y ],
       wall = wall,
-      hole_radius = hole_radius);
+      hole_radius = hole_radius,
+      curve_radius = clamped_radius);
 
   module body(radius) {
     offset(r = radius) {
@@ -30,8 +31,8 @@ module open_box(
 
   linear_extrude(size.z) {
     difference() {
-      body(max_radius);
-      body(max_radius - wall);
+      body(clamped_radius);
+      body(clamped_radius - wall);
     }
   }
 }

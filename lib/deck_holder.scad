@@ -1,4 +1,6 @@
-* deck_holder();
+include <semi_rounded_cube.scad>
+$fn = 500;
+deck_holder();
 
 module
 deck_holder(card_size = [ 68, 94 ], height = 100, wall = 1.5, angle = 5) {
@@ -32,10 +34,11 @@ deck_holder(card_size = [ 68, 94 ], height = 100, wall = 1.5, angle = 5) {
   module part() {
     cube([ size.x, size.y, wall ]);
     translate([ 0, 0, wall ]) { polyhedron(points = points, faces = faces); }
-    cube([ size.x * 2 / 3, wall, size.z ]);
-    cube([ wall / 2, size.y * 2 / 3, size.z ]);
   }
 
   part();
   mirror([ 1, 0, 0 ]) part();
+
+  translate([ 0, wall / 2 ]) semi_rounded_cube([ size.x * 4 / 3, wall, size.z ]);
+  translate([0, size.y / 3]) semi_rounded_cube([wall, size.y * 2 / 3, ]);
 }
